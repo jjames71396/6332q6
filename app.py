@@ -18,10 +18,6 @@ db = client['game_db']
 collection = db['game_states']
 
 
-# Game parameters
-pile_sizes = [0, 0, 0]
-min_pickup = 1
-max_pickup = 3
 players = {}
 
 
@@ -46,6 +42,19 @@ def index():
         
     # Render the template with the game state and player names
     return render_template('index.html', start=start, time=str(time.time()), game_state=game_state)
+
+@app.route('/score', methods=['POST'])
+def score():
+    query = {"name": "game_state"} 
+    pl = int(request.form['pile1'])
+    game_state = collection.find_one(query)
+    
+    if pl == 1:
+        collection.update_one(query, {'$set': {'p1s': game_state['p1s']+1}})
+    else:
+        collection.update_one(query, {'$set': {'p1s': game_state['p2s']+1}})
+
+    return index()
 
 @app.route('/restart', methods=['POST'])
 def restart():
