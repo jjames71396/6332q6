@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game of Stones</title>
+</head>
+<body>
+    <h1>Game of Stones</h1>
+    <h2>{{ game_state.player1 }} vs {{ game_state.player2 }}</h2>
+    <h3>Current Scores: {{ game_state.score1 }} - {{ game_state.score2 }}</h3>
+    <p>Turn: Player {{ game_state.turn }}</p>
+    <p>Number of stones in Pile 1: {{ game_state.pile1 }}</p>
+    <p>Number of stones in Pile 2: {{ game_state.pile2 }}</p>
+    <p>Number of stones in Pile 3: {{ game_state.pile3 }}</p>
+    <form method="POST" action="/play">
+        <label for="stones_removed">Number of stones to pick up:</label>
+        <input type="number" name="stones_removed" min="{{ game_state.min_stones }}" max="{{ game_state.max_stones }}" required>
+        <br>
+        <input type="submit" value="Pick Up">
+    </form>
+    {% if result %}
+        <h2>{{ result }}</h2>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multi-User Game</title>
+</head>
+<body>
+	
+    <h1>Multi-User Game</h1>
+	<h2>Judge</h2>
+	<div class="px-4 py-3 my-2 text-left">
+		<h1 class="display-6 fw"> {{time}}</h1>
+	</div>
+    {% if start %}
+        <form action="/start" method="POST">
+			<div class="d-grid gap-2 d-sm-flex justify-content-sm-center align-items-center my-1">
+				<input type="text" class="form-control" id="name" name="name" style="max-width: 500px;">
+			  </div>  
+            <label for="pile1">P1:</label>
+            <input type="number" name="pile1" required><br><br>
+            <label for="pile2">P2:</label>
+            <input type="number" name="pile2" required><br><br>
+            <input type="submit" value="Start Game">
+        </form>
+	{% else %}
+        <h2>Game State</h2>
+		<div class="px-4 py-3 my-2 text-left">
+			<h1 class="display-6 fw"> {{game_state['question']}}</h1>
+		</div>
+		<div class="px-4 py-3 my-2 text-left">
+			<h1 class="display-6 fw"> P1: {{game_state['p1s']}} P2: {{game_state['p2s']}}</h1>
+		</div>
+		<div class="px-4 py-3 my-2 text-left">
+			<h1 class="display-6 fw"> P1 Answer: {{game_state['p1']}}</h1>
+		</div>
+		<div class="px-4 py-3 my-2 text-left">
+			<h1 class="display-6 fw"> P2 Answer: {{game_state['p2']}}</h1>
+		</div>
+		<form action="/score" method="POST">
+			<label for="pile1"></label>
+            <input type="number" name="pile1" required><br><br>
+			<input type="submit" value="Select Answer">
+        </form>
+        <form action="/restart" method="POST">
+			<input type="submit" value="Restart Game">
+        </form>
+    {% endif %}
+	
+</body>
+</html>
