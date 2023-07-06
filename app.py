@@ -25,7 +25,7 @@ max_pickup = 3
 players = {}
 
 
-document = {'name': 'game_state','started': False,'p1': '','p2': '','question': '', 'p1s': 0, 'p2s': 0}
+document = {'name': 'game_state','started': False,'p1': '','p2': '','question': '', 'p1s': 0, 'p2s': 0, 'p1t': '', 'p2t': ''}
 inserted_document = collection.update_one({'name':'game_state'},{'$set': document})
 
 @app.route('/')
@@ -46,53 +46,6 @@ def index():
         
     # Render the template with the game state and player names
     return render_template('index.html', start=start, time=str(time.time()), game_state=game_state)
-
-@app.route('/players', methods=['POST'])
-def players():
-    query = {"name": "game_state"} 
-    game_state = collection.find_one(query)
-    if game_state['p1'] == '':
-        player1 = request.form['player1']
-        player2 = None
-    elif game_state['p2'] == '':
-        player1 = None
-        player2 = request.form['player2']
-    
-    if player1 is not None and player1 != '':
-        document = {'p1': player1}
-        inserted_document = collection.update_one(query,{'$set': document})
-    elif player2 is not None and player2 != '':
-        document = {'p2': player2}
-        inserted_document = collection.update_one(query,{'$set': document})
-    # Redirect back to the index page
-    return index()
-
-@app.route('/pick', methods=['POST'])
-def pick():
-    query = {"name": "game_state"} 
-    game_state = collection.find_one(query)
-    pile_number = int(request.form['pile_number']) - 1
-    num_stones = int(request.form['num_stones'])
-    if pile_number < 0:
-        pile_number = 0
-    elif pile_number > 2:
-        pile_number = 2
-    # Update the game state
-    pile_sizes[pile_number] -= num_stones
-    players[game_state['turn']] += num_stones
-    
-    # Save the updated game state to the database
-    collection.update_one(query, {'$set': {'pile_sizes': pile_sizes}})
-    # Switch players
-    if game_state['turn'] == 1:
-        document = {'turn': 2}
-        
-    else:
-        document = {'turn': 1}
-    inserted_document = collection.update_one(query,{'$set': document})
-    
-    # Redirect back to the index page
-    return index()
 
 @app.route('/restart', methods=['POST'])
 def restart():

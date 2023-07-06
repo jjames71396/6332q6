@@ -30,10 +30,10 @@
 			<h1 class="display-6 fw"> P1: {{game_state['p1s']}} P2: {{game_state['p2s']}}</h1>
 		</div>
 		<div class="px-4 py-3 my-2 text-left">
-			<h1 class="display-6 fw"> P1 Answer: {{game_state['p1']}}</h1>
+			<h1 class="display-6 fw"> P1 Answer: {{game_state['p1t']}} {{game_state['p1']}}</h1>
 		</div>
 		<div class="px-4 py-3 my-2 text-left">
-			<h1 class="display-6 fw"> P2 Answer: {{game_state['p2']}}</h1>
+			<h1 class="display-6 fw"> P2 Answer: {{game_state['p2t']}} {{game_state['p2']}}</h1>
 		</div>
 		<form action="/score" method="POST">
 			<label for="pile1"></label>
